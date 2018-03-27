@@ -1,0 +1,11 @@
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\bin\Release\CSharpTest_HalaiYaroslav.exe.config
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\bin\Release\CSharpTest_HalaiYaroslav.exe
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\bin\Release\CSharpTest_HalaiYaroslav.pdb
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Release\CSharpTest_HalaiYaroslav.MainForm.resources
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Release\CSharpTest_HalaiYaroslav.Properties.Resources.resources
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Release\CSharpTest_HalaiYaroslav.csproj.GenerateResource.Cache
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Release\CSharpTest_HalaiYaroslav.csproj.CoreCompileInputs.cache
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Release\CSharpTest_HalaiYaroslav.exe
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Release\CSharpTest_HalaiYaroslav.pdb
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Release\CSharpTest_HalaiYaroslav.csprojResolveAssemblyReference.cache
+D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\bin\Release\System.Linq.Dynamic.dll
