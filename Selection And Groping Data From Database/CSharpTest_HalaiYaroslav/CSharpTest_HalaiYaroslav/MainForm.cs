@@ -17,9 +17,7 @@ namespace CSharpTest_HalaiYaroslav
 
         private static string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private const string getAllDataQuery = "SELECT * FROM OrganizationInfo";
-        private DataSet dataSet = new DataSet(); //This is local storage for data which was selected from database
-        private List<DataColumn> columnsNamesPossibleToSum = new List<DataColumn>(); //This lists of columns need to make new CheckBoxes dynamically 
-        private List<DataColumn> columnsNamesPossibleToGroup = new List<DataColumn>();//depending on columns that we got from database 
+        private DataTable dataTable = new DataTable(); //This is local storage for data which was selected from database       
 
         /// <summary>
         /// This method gets searched checkbox by name and layouttable name
@@ -35,7 +33,7 @@ namespace CSharpTest_HalaiYaroslav
             {
                 if (control is CheckBox)
                 {
-                    if (((CheckBox)control).Name == checkBoxName)
+                    if (((CheckBox)control).Text == checkBoxName)
                     {
                         seachedCheckBox = control as CheckBox;
                         break;
@@ -46,248 +44,127 @@ namespace CSharpTest_HalaiYaroslav
             return seachedCheckBox;
         }
 
-        /// <summary>
-        /// This method devide columns from datatable to two groups: ToGroup and ToSum
-        /// </summary>
-        /// <param name="table">Table from where data taking</param>
-        private void DivideColumnsNamesToSumAndGroup(DataTable table)
-        {
-            foreach (DataColumn column in table.Columns)
-            {
-                if (IsColumnNumericType(column.DataType.Name) && column.ColumnName.ToLower() != "id")
-                {
-                    columnsNamesPossibleToSum.Add(column);
-                }
-                else if (!IsColumnNumericType(column.DataType.Name))
-                {
-                    columnsNamesPossibleToGroup.Add(column);
-                }
-            }
-        }
-
-        /// <summary>
-        /// This method says if type is numeric or another
-        /// </summary>
-        /// <param name="type">String representation of type</param>
-        /// <returns>True if type is numeric, otherwise - false</returns>
-        private bool IsColumnNumericType(string type)
+        private bool IsNumeric(string type)
         {
             for (NumericTypes t = NumericTypes.Byte; t < NumericTypes.UInt64; t++)
             {
-                if (type == t.ToString())
+                if(t.ToString() == type)
                 {
                     return true;
-                }
+                }                
             }
+
             return false;
+
         }
 
-        private async void MainForm_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
+            dataTable = GetDataTable(getAllDataQuery);
+
+            dataGridView.DataSource = dataTable;            
+
+            BuildCheckBoxesForColumns();
+        }
+
+        private DataTable GetDataTable(string query)
+        {
+            DataTable dataTable = new DataTable();
+
             try
             {
-                var connection = new SqlConnection(connectionString);
-                await connection.OpenAsync();
-                var adapter = new SqlDataAdapter(getAllDataQuery, connection);
-                adapter.Fill(dataSet);
-                dataGridView.DataSource = dataSet.Tables[0];
-
-                DivideColumnsNamesToSumAndGroup(dataSet.Tables[0]);
-                BuildCheckBoxesForColumns();
-
-                connection.Close();
-
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    var adapter = new SqlDataAdapter(query, connection);
+                    adapter.Fill(dataTable);
+                }
             }
             catch (SqlException ex)
             {
                 MessageBox.Show(ex.Message);
             }
+
+            return dataTable;
         }
 
         private void BuildCheckBoxesForColumns()
         {
-            Control[] checkBoxesToGroup = new Control[0];
+            List<Control> checkBoxes = new List<Control>();
 
-            foreach (var toGroupColName in columnsNamesPossibleToGroup)
+            foreach (DataColumn column in dataTable.Columns)
             {
-                CheckBox checkBox = new CheckBox();
-                checkBox.Name = toGroupColName.ColumnName;
-                checkBox.Text = toGroupColName.ColumnName;
-                checkBox.Dock = DockStyle.Fill;
-                checkBox.CheckStateChanged += CheckBoxesToGroup_CheckStateChanged;
+                if (column.ColumnName.ToLower() != "id")
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Name = IsNumeric(column.DataType.Name) ? $"Numeric-{column.ColumnName}" : $"NotNumeric-{column.ColumnName}";
+                    checkBox.Text = column.ColumnName;                    
+                    checkBox.Dock = DockStyle.Fill;
+                    checkBox.CheckStateChanged += CheckBoxes_CheckStateChanged;
 
-                Array.Resize(ref checkBoxesToGroup, checkBoxesToGroup.Length + 1);
-                checkBoxesToGroup[checkBoxesToGroup.Length - 1] = checkBox;
+                    checkBoxes.Add(checkBox);
+                }
             }
 
-            Control[] checkBoxesToSum = new Control[0];
-
-            foreach (var toSumColName in columnsNamesPossibleToSum)
-            {
-                CheckBox checkBox = new CheckBox();
-                checkBox.Name = toSumColName.ColumnName;
-                checkBox.Text = toSumColName.ColumnName;
-                checkBox.CheckStateChanged += CheckBoxesToSum_CheckStateChanged;
-
-                Array.Resize(ref checkBoxesToSum, checkBoxesToSum.Length + 1);
-                checkBoxesToSum[checkBoxesToSum.Length - 1] = checkBox;
-            }
-
-            checkBoxesToGroupLT.Controls.AddRange(checkBoxesToGroup);
-            checkBoxesToSumLT.Controls.AddRange(checkBoxesToSum);
+            checkBoxesLayoutTable.Controls.AddRange(checkBoxes.ToArray());
         }
 
         private void displayAllDataBtn_Click(object sender, EventArgs e)
         {
             dataGridView.DataSource = null;
-            dataGridView.DataSource = dataSet.Tables[0];
+            dataGridView.DataSource = dataTable;
         }
 
         private void getResultsBtn_Click(object sender, EventArgs e)
         {
-            #region Old Working Verison            
-            byte columnCount = (byte)resultColumnsToGroupList.Items.Count;
 
-            if (columnCount > 0)
-            {
-                dataGridView.Columns.Clear();
-                dataGridView.DataSource = null;
-
-                List<string> colNames = new List<string>();
-                foreach (var item in resultColumnsToGroupList.Items)
-                {
-                    colNames.Add(item.ToString());
-                }
-
-                switch (columnCount)
-                {
-                    case 1:
-                        dataGridView.DataSource = LINQer.GetTable(dataSet, colNames[0]);
-                        break;
-                    case 2:
-                        dataGridView.DataSource = LINQer.GetTable(dataSet, colNames[0], colNames[1]);
-                        break;
-                    case 3:
-                        dataGridView.DataSource = LINQer.GetTable(dataSet, colNames[0], colNames[1], colNames[2]);
-                        break;
-                    case 4:
-                        dataGridView.DataSource = LINQer.GetTable(dataSet, colNames[0], colNames[1], colNames[2], colNames[3]);
-                        break;
-                    case 5:
-                        dataGridView.DataSource = LINQer.GetTable(dataSet, colNames[0], colNames[1], colNames[2], colNames[3], colNames[4]);
-                        break;
-                    default:
-                        MessageBox.Show("Something went wrong in the switch statment.");
-                        dataGridView.DataSource = dataSet.Tables[0];
-                        break;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Choose at least one column to be able to Get Results.");
-            }
-            #endregion
-
-            #region New Not Working Version
-            //byte columnToGroupCount = (byte)resultColumnsToGroupList.Items.Count;
-            //byte columnToSumCount = (byte)resultColumnsToSumList.Items.Count;
-
-            //if (columnToGroupCount > 0 && columnToSumCount > 0)
-            //{
-            //    dataGridView.Columns.Clear();
-            //    dataGridView.DataSource = null;
-
-            //    List<string> columnsToGroup = new List<string>();
-            //    foreach (string columnName in resultColumnsToGroupList.Items)
-            //    {
-            //        foreach (DataColumn column in columnsNamesPossibleToGroup)
-            //        {
-            //            if (columnName == column.ColumnName)
-            //            {
-            //                columnsToGroup.Add(column.ToString());
-            //            }
-            //        }
-            //    }
-
-            //    List<string> columnsToSum = new List<string>();
-            //    foreach (string columnName in resultColumnsToSumList.Items)
-            //    {
-            //        foreach (DataColumn column in columnsNamesPossibleToSum)
-            //        {
-            //            if (columnName == column.ColumnName)
-            //            {
-            //                columnsToSum.Add(column.ToString());
-            //            }
-            //        }
-            //    }
-
-            //    //dataGridView.DataSource = null;
-            //    //dataGridView.DataSource = LINQer.GetTable(dataSet.Tables[0], columnsToGroup, columnsToSum);
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Choose at least one column to Sum and To Group to be able Get Results.");
-            //}
-            #endregion
         }
 
         private void DataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridViewColumn selectedColumn = dataGridView.Columns[e.ColumnIndex];
-            if (selectionModeToGroup.Checked)
+
+            if (IsNumeric(selectedColumn.ValueType.Name) && selectedColumn.Name.ToLower() != "id")
             {
-                if (resultColumnsToGroupList.Items.Contains(selectedColumn.Name) || selectedColumn.Name.ToLower() == "id" || IsColumnNumericType(selectedColumn.ValueType.Name))
-                {
-                    return;
-                }
-                else
-                {
-                    GetCheckBox(selectedColumn.Name, checkBoxesToGroupLT).CheckState = CheckState.Checked;
-                }
+                resultColumnsToSumList.Items.Add(selectedColumn.Name);
             }
-            else if (selectionModeToSum.Checked)
+            else if(!IsNumeric(selectedColumn.ValueType.Name))
             {
-                if (resultColumnsToSumList.Items.Contains(selectedColumn.Name) || selectedColumn.Name.ToLower() == "id" || !IsColumnNumericType(selectedColumn.ValueType.Name))
-                {
-                    return;
-                }
-                else
-                {
-                    GetCheckBox(selectedColumn.Name, checkBoxesToSumLT).CheckState = CheckState.Checked;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Choose selection mode!");
+                resultColumnsToGroupList.Items.Add(selectedColumn.Name);
             }
         }
 
-        private void CheckBoxesToGroup_CheckStateChanged(object sender, EventArgs e)
+        private void CheckBoxes_CheckStateChanged(object sender, EventArgs e)
         {
-            CheckBox checkedBox = sender as CheckBox;
+            CheckBox checkBox = sender as CheckBox;
 
-            if (checkedBox.Checked && resultColumnsToGroupList.Items.Contains(checkedBox.Name) != true)
+            string type = checkBox.Name.Split('-')[0];
+            string name = checkBox.Name.Split('-')[1];
+
+            if (type == "Numeric" && name.ToLower() != "id")
             {
-                resultColumnsToGroupList.Items.Add(checkedBox.Name);
+                resultColumnsToSumList.Items.Add(name);
             }
-            else
+            else if (type == "NotNumeric")
             {
-                resultColumnsToGroupList.Items.Remove(checkedBox.Name);
+                resultColumnsToGroupList.Items.Add(name);
             }
         }
 
-        private void CheckBoxesToSum_CheckStateChanged(object sender, EventArgs e)
+        private void removeColumnToGroup_Click(object sender, EventArgs e)
         {
-            CheckBox checkedBox = sender as CheckBox;
+            object selectedItem = resultColumnsToGroupList.SelectedItem;
 
-            if (checkedBox.Checked && resultColumnsToSumList.Items.Contains(checkedBox.Name) != true)
+            if (selectedItem != null)
             {
-                resultColumnsToSumList.Items.Add(checkedBox.Name);
+                GetCheckBox(selectedItem.ToString(), checkBoxesLayoutTable).Checked = false;
+                resultColumnsToGroupList.Items.Remove(selectedItem);
             }
-            else
-            {
-                resultColumnsToSumList.Items.Remove(checkedBox.Name);
-            }
+        }
+
+        private void removeColumnToSum_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -19,3 +19,14 @@ D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpT
 D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Debug\CSharpTest_HalaiYaroslav.exe
 D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Debug\CSharpTest_HalaiYaroslav.pdb
 D:\Studying\Programming Tasks\C# Test (Halai Yaroslav) for IT-Enterprise\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\bin\Debug\System.Linq.Dynamic.dll
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\bin\Debug\CSharpTest_HalaiYaroslav.exe.config
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\bin\Debug\CSharpTest_HalaiYaroslav.exe
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\bin\Debug\CSharpTest_HalaiYaroslav.pdb
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\bin\Debug\System.Linq.Dynamic.dll
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Debug\CSharpTest_HalaiYaroslav.csprojResolveAssemblyReference.cache
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Debug\CSharpTest_HalaiYaroslav.MainForm.resources
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Debug\CSharpTest_HalaiYaroslav.Properties.Resources.resources
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Debug\CSharpTest_HalaiYaroslav.csproj.GenerateResource.Cache
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Debug\CSharpTest_HalaiYaroslav.csproj.CoreCompileInputs.cache
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Debug\CSharpTest_HalaiYaroslav.exe
+D:\GitHub\Solved-Programming-Tasks\Selection And Groping Data From Database\CSharpTest_HalaiYaroslav\CSharpTest_HalaiYaroslav\obj\Debug\CSharpTest_HalaiYaroslav.pdb
